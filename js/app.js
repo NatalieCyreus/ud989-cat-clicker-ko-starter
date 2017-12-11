@@ -18,6 +18,11 @@ var ViewModel = function() {
     }
   }
 
+  this.nicknames = ko.observableArray([
+    {nickname:'Kittie'},
+    {nickname: 'hello Kitty'}
+  ]);
+
 }
 
 ko.applyBindings(new ViewModel())
