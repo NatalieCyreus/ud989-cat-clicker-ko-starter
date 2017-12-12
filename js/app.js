@@ -1,30 +1,66 @@
-var Cat = function() {
-  this.clickCount  = ko.observable(0);
-  this.name = ko.observable('Tabby');
-  this.imgSrc = ko.observable('img/22252709_010df3379e_z.jpg');
-  this.imgAttribution = ko.observable('https://');
-  this.level = ko.observable('newborn');
-  this.nicknames = ko.observableArray(['Kittie', 'hello Kitty']);
+var initialCats = [
+  {
+    clickCount: 0,
+    name: 'Tabby',
+    imgSrc: 'img/9648464288_2516b35537_z.jpg',
+    imgAttribution: 'blalala',
+    nicknames: ['Tibbie', 'Tralala','Mrs.T']
+  },
+  {
+    clickCount: 0,
+    name: 'Cutie',
+    imgSrc: 'img/4154543904_6e2428c421_z.jpg',
+    imgAttribution: 'blalala',
+    nicknames: ['Coco', 'Co','Mrs.C']
+  },
+  {
+    clickCount: 0,
+    name: 'Kittie',
+    imgSrc: 'img/1413379559_412a540d29_z.jpg',
+    imgAttribution: 'blalala',
+    nicknames: ['helloKittie', 'Ki','Mrs.Ki']
+  }
+]
 
-  this.incrementLevel = function() {
-    if (this.clickCount() < 10){
-      this.level('newborn')
-    }else if (this.clickCount() < 20) {
-      this.level('infant')
-    } else if (this.clickCount() < 30){
-      this.level('teen')
-    } else if (this.clickCount() < 40){
-      this.level('adult')
+//Cat Clicker build with KnockOut by Natalie 2017
+
+var Cat = function(data) {
+  this.clickCount  = ko.observable(data.clickCount);
+  this.name = ko.observable(data.name);
+  this.imgSrc = ko.observable(data.imgSrc);
+  this.imgAttribution = ko.observable(data.imgAttribution);
+  this.nicknames = ko.observableArray(data.nicknames);
+
+  this.title = ko.computed(function() {
+    var title;
+    var clicks = this.clickCount();
+    if (clicks < 10){
+      title = 'newborn';
+    }else if (clicks < 20) {
+      title = 'infant';
+    } else if (clicks < 30){
+      title = 'teen';
+    } else if (clicks < 40){
+      title = 'adult';
     } else {
-      this.level('ninja')
+      title = 'ninja';
     }
-  };
+    return title;
+  }, this);
 };
 
 var ViewModel = function() {
-  this.currentCat = ko.observable( new Cat() );
+  var self = this;
+  this.catList = ko.observableArray([]);
+  initialCats.forEach(function(catItem){
+    self.catList.push( new Cat (catItem) )
+  });
+  this.setCat = function(clickedCat) {
+    self.currentCat(clickedCat);
+  };
+  this.currentCat = ko.observable( this.catList()[0] );
   this.incrementCounter = function() {
-    this.currentCat().clickCount(this.currentCat().clickCount() + 1);
+    self.currentCat().clickCount(self.currentCat().clickCount() + 1);
   };
 }
 
